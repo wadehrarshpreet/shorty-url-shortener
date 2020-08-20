@@ -1,0 +1,80 @@
+#!/bin/bash
+
+STAGED_GO_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep "\.go$")
+
+if [[ "$STAGED_GO_FILES" = "" ]]; then
+  exit 0
+fi
+
+GOLINT=`which golint`
+GOIMPORTS=`which goimports`
+
+# Check for golint
+if [[ ! -x "$GOLINT" ]]; then
+  printf "\t\033[41mPlease install golint\033[0m (go get -u golang.org/x/lint/golint)"
+  exit 1
+fi
+
+# Check for goimports
+if [[ ! -x "$GOIMPORTS" ]]; then
+  printf "\t\033[41mPlease install goimports\033[0m (go get golang.org/x/tools/cmd/goimports)"
+  exit 1
+fi
+
+PASS=true
+
+for FILE in $STAGED_GO_FILES
+do
+  # skip vendor files
+  if [[ $FILE == "vendor/"* || $FILE == "tools/"* ]];then
+        continue
+  fi
+  
+  # Run goimports on the staged file
+  $GOIMPORTS -w $FILE
+  if [[ $? != 0 ]]; then
+    printf "\t\033[31mgoimports $FILE\033[0m \033[0;30m\033[41mFAILURE!\033[0m\n"
+    PASS=false
+  else
+    printf "\t\033[32mgoimports $FILE\033[0m \033[0;30m\033[42mpass\033[0m\n"
+  fi
+
+  # Run golint on the staged file and check the exit status
+  $GOLINT "-set_exit_status" $FILE
+  if [[ $? == 1 ]]; then
+    printf "\t\033[31mgolint $FILE\033[0m \033[0;30m\033[41mFAILURE!\033[0m\n"
+    PASS=false
+  else
+    printf "\t\033[32mgolint $FILE\033[0m \033[0;30m\033[42mpass\033[0m\n"
+  fi
+
+  # Run gopls check on the staged file and check the exit status
+  gopls check $FILE
+  if [[ $? != 0 ]]; then
+    printf "\t\033[31mgopls check $FILE\033[0m \033[0;30m\033[41mFAILURE!\033[0m\n"
+    PASS=false
+  else
+    printf "\t\033[32mgopls check $FILE\033[0m \033[0;30m\033[42mpass\033[0m\n"
+  fi
+  
+  # format unforamted file
+  UNFORMATTED=$(gofmt -l $FILE)
+  if [[ "$UNFORMATTED" != "" ]];then
+    gofmt -w $PWD/$UNFORMATTED
+    if [[ $? != 0 ]]; then
+      PASS=false
+    fi
+  fi
+  
+  # add changed file
+  git add $FILE
+done
+
+if ! $PASS; then
+  printf "\033[0;30m\033[41mCOMMIT FAILED\033[0m\n"
+  exit 1
+else
+  printf "\033[0;30m\033[42mCOMMIT SUCCEEDED\033[0m\n"
+fi
+
+exit 0

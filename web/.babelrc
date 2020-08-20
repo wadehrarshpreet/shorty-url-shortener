@@ -1,0 +1,32 @@
+{
+	"presets": ["@babel/preset-env", "@babel/preset-react"],
+	"plugins": [
+		"@babel/transform-runtime",
+		[
+		"@babel/plugin-proposal-decorators",
+		{
+			"legacy": true
+		}
+		],
+		[
+			"@babel/plugin-proposal-class-properties",
+			{
+				"loose": true
+			}
+		],
+		"@babel/plugin-syntax-dynamic-import",
+		"@babel/plugin-transform-modules-commonjs"
+	],
+	"env": {
+		"production": {
+			"plugins": [
+			  "lodash",
+			  "transform-react-remove-prop-types",
+			  "@babel/plugin-transform-react-inline-elements",
+			  "@babel/plugin-transform-react-constant-elements",
+			  ["transform-remove-console", { "exclude": ["error", "warn", "info"] }],
+			  "transform-remove-debugger"
+			]
+		  }
+	}
+}

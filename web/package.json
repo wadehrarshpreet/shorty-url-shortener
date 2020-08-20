@@ -1,0 +1,115 @@
+{
+  "name": "react-redux-boilerplate",
+  "version": "2.0.0",
+  "description": "React/Sass/Redux/React-Router/Lazy-Loading/File-Splitting/Webpack 4",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint ./src/**/*.{js,jsx} --quiet --ignore-path .gitignore",
+    "lint:fix": "eslint ./src/**/*.{js,jsx} --fix --quiet --ignore-path .gitignore ",
+    "build-dev": "cross-env NODE_ENV=dev webpack",
+    "start": "cross-env NODE_ENV=dev webpack-dev-server -d",
+    "build": "cross-env NODE_ENV=prod webpack -p"
+  },
+  "author": "Arshpreet Wadehra",
+  "license": "ISC",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{css,scss,md,json}": [
+      "pretty-quick --staged",
+      "git add"
+    ],
+    "*.{js,jsx}": [
+      "pretty-quick --staged",
+      "eslint --fix --quiet --ignore-path .gitignore",
+      "git add"
+    ]
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "last 2 version",
+    "not dead",
+    "iOS >= 9"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/plugin-proposal-class-properties": "^7.5.0",
+    "@babel/plugin-proposal-decorators": "^7.4.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.5.0",
+    "@babel/plugin-transform-react-constant-elements": "^7.5.0",
+    "@babel/plugin-transform-react-inline-elements": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.5.0",
+    "@babel/polyfill": "^7.2.5",
+    "@babel/preset-env": "^7.1.6",
+    "@babel/preset-react": "^7.0.0",
+    "antd": "^3.20.3",
+    "autoprefixer": "^9.3.1",
+    "babel-eslint": "^10.0.2",
+    "babel-loader": "^8.0.4",
+    "babel-plugin-lodash": "^3.3.4",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "babel-plugin-transform-remove-console": "^6.9.4",
+    "babel-plugin-transform-remove-debugger": "^6.9.4",
+    "babel-preset-env": "^1.7.0",
+    "brotli-webpack-plugin": "^1.1.0",
+    "circular-dependency-plugin": "^5.0.2",
+    "clean-webpack-plugin": "^1.0.0",
+    "compression-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^4.6.0",
+    "cross-env": "^5.2.0",
+    "css-loader": "^1.0.1",
+    "es6-promise": "^4.2.8",
+    "eslint": "5.12.0",
+    "eslint-config-airbnb": "^17.1.1",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-import-resolver-webpack": "^0.11.1",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jsx-a11y": "6.1.2",
+    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-react": "^7.9.1",
+    "eslint-plugin-react-hooks": "^1.0.1",
+    "eslint-plugin-snakecasejs": "^1.2.1",
+    "eslint-plugin-underscore_case": "^0.1.3",
+    "fetch-ie8": "^1.5.0",
+    "file-loader": "^2.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "husky": "^3.0.0",
+    "immer": "^3.1.3",
+    "lint-staged": "^9.2.0",
+    "lodash": "^4.17.13",
+    "mini-css-extract-plugin": "^0.4.5",
+    "node-sass": "^4.11.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "postcss-loader": "^3.0.0",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^1.11.1",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-loadable": "^5.5.0",
+    "react-redux": "^5.1.1",
+    "react-router": "^4.3.1",
+    "react-router-config": "^5.0.1",
+    "react-router-dom": "^4.3.1",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "terser-webpack-plugin": "^1.3.0",
+    "uglifyjs-webpack-plugin": "^2.0.1",
+    "webpack": "^4.26.1",
+    "webpack-bundle-analyzer": "^3.3.2",
+    "webpack-chunk-hash": "^0.6.0",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.14",
+    "webpack-merge": "^4.1.4",
+    "whatwg-fetch": "^3.0.0"
+  }
+}

@@ -1,0 +1,5 @@
+node_modules
+dist
+.editorconfig
+.gitattributes
+yarn-error.log

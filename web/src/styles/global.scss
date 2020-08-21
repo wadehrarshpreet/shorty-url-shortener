@@ -3,4 +3,18 @@
 
 body {
   background-color: $theme-color;
+  font-family: 'Oxygen', sans-serif;
+}
+
+a,
+a:visited {
+  color: #475adb;
+}
+
+.app-container {
+  padding-top: $headerHeight;
+}
+
+.text-left {
+  text-align: left;
 }

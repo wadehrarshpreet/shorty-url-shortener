@@ -21,7 +21,7 @@ if (process.env.BUNDLE_ANALYSE) {
   plugins.push(new BundleAnalyzerPlugin());
 }
 // the path(s) that should be cleaned
-const pathsToClean = ['dist/*'];
+const pathsToClean = isProd ? ['dist/*'] : [];
 
 // the clean options to use
 const cleanOptions = {
@@ -120,13 +120,18 @@ module.exports = {
       template: helpers.root('src/public/index.html'),
       inject: 'body',
       hash: true,
-      filename: '../index.html'
+      filename: '../index.html',
+      title: 'Shorty'
     }),
-
+    new HtmlWebpackPlugin({
+      template: helpers.root('src/public/index.html'),
+      inject: 'body',
+      hash: true
+    }),
     new MiniCssExtractPlugin({
-			filename: isProd ? 'css/[name].[contenthash].css' : 'css/[name].css',
-			chunkFilename: !isProd ? '[name]/[name].css' : '[name]/[name].[contenthash].css',
-		}),
+      filename: isProd ? 'css/[name].[contenthash].css' : 'css/[name].css',
+      chunkFilename: !isProd ? '[name]/[name].css' : '[name]/[name].[contenthash].css'
+    }),
 
     new CopyWebpackPlugin([
       {

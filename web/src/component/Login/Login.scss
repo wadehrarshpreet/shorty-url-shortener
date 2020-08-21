@@ -1,0 +1,87 @@
+.signup {
+  text-align: center;
+  margin: auto;
+  margin-top: 30px;
+  max-width: 550px;
+
+  .label-text {
+    font-size: 24px;
+    color: #6b6767;
+  }
+
+  .signup-form {
+    margin-top: 30px;
+
+    .title {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .sub-title {
+      font-size: 18px;
+      color: #777;
+      font-style: italic;
+    }
+
+    form {
+      margin-top: 40px;
+
+      .disclaimer {
+        color: #888;
+        font-size: 12px;
+      }
+
+      .btn-primary {
+        margin: 20px 0;
+      }
+
+      .input-group {
+        margin-bottom: 15px;
+
+        label {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          font-size: 18px;
+          color: #666;
+
+          input {
+            border: 1px solid #ddd;
+            margin-top: 10px;
+            outline: none;
+            box-sizing: border-box;
+            border-radius: 4px;
+            width: 100%;
+            padding: 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.err {
+  color: #f75248 !important;
+
+  label {
+    color: #f75248 !important;
+  }
+
+  input {
+    color: #f75248 !important;
+    border-color: #f75248 !important;
+  }
+}
+
+.btn-primary {
+  font-size: 20px;
+  text-align: center;
+  width: 100%;
+  background: #475adb;
+  border: 0;
+  height: 40px;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: 600;
+}

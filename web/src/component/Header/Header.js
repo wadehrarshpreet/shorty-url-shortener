@@ -1,38 +1,25 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, Layout } from 'antd';
+import { Link, withRouter } from 'react-router-dom';
+import './Header.scss';
 
-const { Header } = Layout;
-
-const LEFT_NAV_ITEMS = [
-  {
-    id: 'home',
-    label: 'Home',
-    path: '/'
-  },
-  {
-    id: 'about',
-    label: 'About',
-    path: '/about'
-  },
-  {
-    id: 'contact',
-    label: 'Contact',
-    path: '/contact'
-  }
-];
-
-const AppHeader = () => (
-  <Header className='header'>
-    <div className='logo' />
-    <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['home']} style={{ lineHeight: '64px' }}>
-      {LEFT_NAV_ITEMS.map((navItem) => (
-        <Menu.Item key={navItem.id}>
-          <Link to={navItem.path}>{navItem.label}</Link>
-        </Menu.Item>
-      ))}
-    </Menu>
-  </Header>
+const AppHeader = ({ history }) => (
+  <header>
+    <div className='content'>
+      <div className='left-section'>
+        <div className='logo-container' onClick={() => history.push('/')}>
+          <img alt='logo' className='logo' src='/assets/logo.png' /> <span className='title'>Shorty</span>
+        </div>
+      </div>
+      <div className='right-section'>
+        <div className='nav-item'>
+          <Link to='/login'>Login</Link>
+        </div>
+        <div className='nav-item'>
+          <Link to='/signup'>Sign up</Link>
+        </div>
+      </div>
+    </div>
+  </header>
 );
 
-export default AppHeader;
+export default withRouter(AppHeader);

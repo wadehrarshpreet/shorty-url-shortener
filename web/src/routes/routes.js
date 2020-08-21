@@ -1,8 +1,7 @@
 import React from 'react';
 import Loadable from 'react-loadable';
-import { Spin } from 'antd';
 
-const Loading = () => <Spin />;
+const Loading = () => <>Loading...</>;
 
 export default [
   {
@@ -14,18 +13,17 @@ export default [
     })
   },
   {
-    exact: true,
-    path: '/about',
+    path: '/signup',
     component: Loadable({
-      loader: () => import(/* webpackChunkName: "contact", webpackMode: "lazy" */ '../component/About'),
+      loader: () => import(/* webpackChunkName: "home", webpackMode: "lazy" */ '../component/SignUp/SignUp'),
       loading: Loading
     })
   },
   {
     exact: true,
-    path: '/contact',
+    path: '/login',
     component: Loadable({
-      loader: () => import(/* webpackChunkName: "about", webpackMode: "lazy" */ '../component/Contact'),
+      loader: () => import(/* webpackChunkName: "home", webpackMode: "lazy" */ '../component/Login/Login'),
       loading: Loading
     })
   }

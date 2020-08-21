@@ -14,7 +14,7 @@ module.exports = merge(commonConfig, {
 
   output: {
     filename: '[name].[contenthash].js',
-		chunkFilename: '[name]/[name].[contenthash].chunk.js',
+    chunkFilename: '[name]/[name].[contenthash].chunk.js'
   },
   plugins: [
     new CompressionPlugin({

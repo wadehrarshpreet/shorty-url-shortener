@@ -10,7 +10,6 @@ import { Provider } from 'react-redux';
 import App from './App.jsx';
 import configureStore from './configureStore';
 import './styles/global.scss';
-import 'antd/dist/antd.css';
 
 const initialState = {};
 const store = configureStore(initialState);

@@ -7,10 +7,6 @@ export default class Home extends React.Component {
   }
 
   render() {
-    return (
-      <div className='container'>
-        <h2>This is React Redux BoilerPlace!</h2>
-      </div>
-    );
+    return <h2>Thisss is React Redux BoilerPlace!</h2>;
   }
 }

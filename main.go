@@ -42,8 +42,17 @@ func main() {
 	// Init Static Assets
 	e.Static("/assets", "./web/dist")
 
+	// e.GET("/api", func(c echo.Context) error {
+	// 	u := struct {
+	// 		Name  string
+	// 		Email string
+	// 	}{Name: "He", Email: "a@aa.com"}
+
+	// 	return c.JSONPretty(http.StatusOK, u, "  ")
+	// })
+
 	// SPA load
-	e.File("/", "./web/index.html")
+	e.File("/*", "./web/index.html")
 
 	go func() {
 		e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", port)))

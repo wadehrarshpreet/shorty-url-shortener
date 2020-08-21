@@ -1,13 +1,7 @@
-# react-redux-boilerplate
-##### React/Sass/Redux/React-Router/Lazy-Loading/File-Splitting/Webpack 4
-
+# Shorty UI
 
 ## Getting Started
 
-* Clone the repo
-    ```
-    >git clone https://github.com/wadehrarshpreet/react-redux-boilerplate.git
-    ```
 * Browse the Repo from cmd/termnial and type
     ```
     >npm install or yarn install

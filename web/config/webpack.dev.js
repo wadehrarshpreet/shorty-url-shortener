@@ -35,7 +35,7 @@ module.exports = merge(commonConfig, {
   devServer: {
     contentBase: path.join(__dirname, '../dist'),
     historyApiFallback: true,
-    port: 3000,
+    port: 3002,
     disableHostCheck: true,
     host: '0.0.0.0',
     compress: true,

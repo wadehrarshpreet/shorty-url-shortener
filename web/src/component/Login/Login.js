@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import './Login.scss';
-
 const Login = () => {
   const [form, setForm] = React.useState({ username: { value: '', error: '' } });
   console.log(form);

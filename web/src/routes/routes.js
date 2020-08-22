@@ -6,13 +6,6 @@ const Loading = () => <>Loading...</>;
 export default [
   {
     exact: true,
-    path: '/',
-    component: Loadable({
-      loader: () => import(/* webpackChunkName: "home", webpackMode: "lazy" */ '../component/Home'),
-      loading: Loading
-    })
-  },
-  {
     path: '/signup',
     component: Loadable({
       loader: () => import(/* webpackChunkName: "home", webpackMode: "lazy" */ '../component/SignUp/SignUp'),
@@ -24,6 +17,13 @@ export default [
     path: '/login',
     component: Loadable({
       loader: () => import(/* webpackChunkName: "home", webpackMode: "lazy" */ '../component/Login/Login'),
+      loading: Loading
+    })
+  },
+  {
+    path: '/',
+    component: Loadable({
+      loader: () => import(/* webpackChunkName: "home", webpackMode: "lazy" */ '../component/Home'),
       loading: Loading
     })
   }

@@ -2,10 +2,20 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title><%= htmlWebpackPlugin.options.title %></title>
-    <link rel="shortcut icon" href="./favicon.ico" />
-    <link href="https://fonts.googleapis.com/css2?family=Oxygen&display=swap" rel="stylesheet" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+      {{if and .SEO .SEO.title}} {{.SEO.title}} {{else}} Shorty {{end}}
+    </title>
+    {{if and .SEO .SEO.keywords}}
+    <meta name="keywords" content="{{.SEO.keywords}}" />
+    {{end}} {{if and .SEO .SEO.description}}
+    <meta name="description" content="{{.SEO.description}}" />
+    {{end}}
+    <link rel="shortcut icon" href="/assets/logo.png" />
+    <link rel="manifest" href="/assets/manifest.json" />
+    <link href="https://fonts.googleapis.com/css2?family=Oxygen&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div id="root"></div>

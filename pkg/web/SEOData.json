@@ -1,0 +1,12 @@
+{
+	"/": {
+		"title": "Shorty - URL Shortner",
+		"keywords": "url short, url shortner, shorty",
+		"description": "Shorty - URL Shortner service"
+	},
+	"/login": {
+		"title": "Login - Shorty URL Shortner",
+		"keywords": "url short, url shortner, shorty",
+		"description": "Shorty - URL Shortner service"
+	}
+}

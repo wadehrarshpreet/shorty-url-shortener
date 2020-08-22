@@ -2,13 +2,13 @@
 @import './variables.scss';
 
 body {
-  background-color: $theme-color;
+  background-color: #f2f2f2;
   font-family: 'Oxygen', sans-serif;
 }
 
 a,
 a:visited {
-  color: #475adb;
+  color: $theme-color;
 }
 
 .app-container {
@@ -17,4 +17,29 @@ a:visited {
 
 .text-left {
   text-align: left;
+}
+
+.btn-primary {
+  font-size: 20px;
+  text-align: center;
+  width: 100%;
+  background: $theme-color;
+  border: 0;
+  height: 40px;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.err {
+  color: $err-color !important;
+
+  label {
+    color: $err-color !important;
+  }
+
+  input {
+    color: $err-color !important;
+    border-color: $err-color !important;
+  }
 }

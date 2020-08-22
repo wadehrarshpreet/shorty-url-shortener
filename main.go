@@ -13,6 +13,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
 	"github.com/wadehrarshpreet/short/pkg/util"
+	"github.com/wadehrarshpreet/short/pkg/web"
 )
 
 func main() {
@@ -31,7 +32,7 @@ func main() {
 
 	port := util.Getenv("PORT", "1234")
 	e := echo.New()
-	e.Logger.SetLevel(log.DEBUG)
+	// e.Logger.SetLevel(log.DEBUG)
 
 	// Connect Database
 	util.ConnectDatabase()
@@ -42,17 +43,9 @@ func main() {
 	// Init Static Assets
 	e.Static("/assets", "./web/dist")
 
-	// e.GET("/api", func(c echo.Context) error {
-	// 	u := struct {
-	// 		Name  string
-	// 		Email string
-	// 	}{Name: "He", Email: "a@aa.com"}
-
-	// 	return c.JSONPretty(http.StatusOK, u, "  ")
-	// })
-
-	// SPA load
-	e.File("/*", "./web/index.html")
+	// Init Webview routes
+	web.InitWebsite(e)
+	// e.File("/*", "./web/index.html")
 
 	go func() {
 		e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", port)))

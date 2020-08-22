@@ -1,6 +1,14 @@
 package util
 
-import "os"
+import (
+	"os"
+	"regexp"
+
+	"github.com/labstack/echo/v4"
+)
+
+var emailRegex = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+var passwordRegexp = regexp.MustCompile("(?i)^(?:[0-9]+[a-z]|[a-z]+[0-9])[a-z0-9]*$")
 
 // Getenv reads environment variables for given key and second argument as fallback value
 func Getenv(key, fallback string) string {
@@ -8,4 +16,27 @@ func Getenv(key, fallback string) string {
 		return value
 	}
 	return fallback
+}
+
+// GenerateErrorResponse used to return json response for error
+func GenerateErrorResponse(ctx echo.Context, code int, pathOrMessage string) error {
+	message, ok := errorMap[pathOrMessage]
+	if !ok {
+		message = pathOrMessage
+	}
+
+	return ctx.JSON(code, echo.Map{
+		"error":   true,
+		"message": message,
+	})
+}
+
+// ValidateEmail to validate an email address
+func ValidateEmail(email string) bool {
+	return emailRegex.MatchString(email)
+}
+
+// ValidatePassword to validate password
+func ValidatePassword(password string) bool {
+	return len(password) > 8 && passwordRegexp.MatchString(password)
 }

@@ -12,6 +12,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
+	"github.com/wadehrarshpreet/short/pkg/auth"
 	"github.com/wadehrarshpreet/short/pkg/util"
 	"github.com/wadehrarshpreet/short/pkg/web"
 )
@@ -43,9 +44,14 @@ func main() {
 	// Init Static Assets
 	e.Static("/assets", "./web/dist")
 
-	// Init Webview routes
+	// Initialize Auth Service
+	authServiceErr := auth.Init(e)
+	if authServiceErr != nil {
+		e.Logger.Fatalf("Error in initializing Auth Service... %s", authServiceErr)
+	}
+
+	// Initialize Webview
 	web.InitWebsite(e)
-	// e.File("/*", "./web/index.html")
 
 	go func() {
 		e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", port)))

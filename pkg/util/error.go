@@ -18,6 +18,5 @@ var errorMap = map[string]errorData{
 	"AUTH_INVALID_PASSWORD":    {10005, "Password must be 8 character long with at least one number & one character."},
 	"AUTH_USER_ALREADY_EXIST":  {10006, "Username already taken."},
 	"AUTH_EMAIL_ALREADY_EXIST": {10007, "Email Already exist"},
-	"AUTH_NO_USER_FOUND":       {10008, "No user found."},
-	"AUTH_FAILED":              {10009, "Authentication failed"},
+	"AUTH_FAILED":              {10009, "Invalid Username or Password"},
 }

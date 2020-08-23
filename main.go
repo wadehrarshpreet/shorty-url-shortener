@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -46,6 +47,19 @@ func main() {
 
 	// Init Request Logger
 	e.Use(middleware.Logger())
+
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+	}))
+
+	apiGroup := e.Group("/api", middleware.JWT([]byte(util.Getenv("JWT_SECRET", "shorty-secret123"))))
+
+	apiGroup.GET("/", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, echo.Map{
+			"status":     "ok",
+			"appVersion": util.Getenv("APP_VERSION", "0.0.1"),
+		})
+	})
 
 	// Init Static Assets
 	e.Static("/assets", "./web/dist")

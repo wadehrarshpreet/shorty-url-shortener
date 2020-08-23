@@ -124,7 +124,7 @@ module.exports = {
       title: 'Shorty'
     }),
     new HtmlWebpackPlugin({
-      template: helpers.root('src/public/index.html'),
+      template: helpers.root('src/public/index.dev.html'),
       inject: 'body',
       hash: true
     }),

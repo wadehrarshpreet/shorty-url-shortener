@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import './SignUp.scss';
+import { signUpUser } from '../../actions/auth';
+import { connect } from 'react-redux';
 
 function validateEmail(email) {
   // eslint-disable-next-line
@@ -13,9 +15,8 @@ function validatePassword(pwd) {
   return pwd.length > 8 && /(?=.*?[0-9])(?=.*?[A-Za-z]).+/gi.test(pwd);
 }
 
-const SignUp = () => {
+const SignUp = ({ signup, signupState }) => {
   const [form, setForm] = React.useState({ username: { value: '', error: '' } });
-  console.log(form);
 
   return (
     <div className='signup'>
@@ -28,6 +29,7 @@ const SignUp = () => {
         <div className='sub-title'>
           Already have an account? <Link to='/login'>Log In</Link>
         </div>
+        {signupState?.error?.message && <div className='err mtb-1 fs-18'>{signupState?.error?.message}</div>}
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -36,18 +38,19 @@ const SignUp = () => {
             const email = form?.email?.value || '';
             const password = form?.password?.value || '';
             if (username.length < 4 || username.length > 32) {
-              setForm((x) => ({ ...x, username: { ...(x.username || {}), error: 'Letter & numbers only. 4–32 characters.' } }));
+              setForm((x) => ({ ...x, username: { ...(x?.username || {}), error: 'Letter & numbers only. 4–32 characters.' } }));
               isError = true;
             }
             if (!validateEmail(email)) {
               isError = true;
-              setForm((x) => ({ ...x, email: { ...(x.email || {}), error: 'Enter a valid email address.' } }));
+              setForm((x) => ({ ...x, email: { ...(x?.email || {}), error: 'Enter a valid email address.' } }));
             }
             if (!validatePassword(password)) {
               isError = true;
-              setForm((x) => ({ ...x, password: { ...(x.password || {}), error: 'Password must be 8 character long with at least one number & one character.' } }));
+              setForm((x) => ({ ...x, password: { ...(x?.password || {}), error: 'Password must be 8 character long with at least one number & one character.' } }));
             }
             if (isError) return null;
+            signup({ username, email, password });
             return null;
           }}
         >
@@ -84,4 +87,8 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+const mapStateToProps = ({ auth }) => ({ signupState: auth?.signup });
+
+export default connect(mapStateToProps, {
+  signup: signUpUser
+})(SignUp);

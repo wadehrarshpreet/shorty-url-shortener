@@ -2,7 +2,6 @@ package auth
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -36,7 +35,9 @@ type User struct {
 // Init initializes auth routes and services
 func Init(e *echo.Echo) error {
 
-	// initate routes
+	// initate Auth Routes
+
+	// Login Route
 	e.POST("/login", func(ctx echo.Context) error {
 		u := new(User)
 		if err := ctx.Bind(u); err != nil {
@@ -52,14 +53,13 @@ func Init(e *echo.Echo) error {
 		userCollection := util.DB.Collection("users")
 
 		query := bson.M{"_id": u.Username}
-		fmt.Printf("query %v", query)
 
 		returnUser := new(User)
 		err := userCollection.FindOne(context.Background(), query).Decode(&returnUser)
 
 		if err != nil {
 			// e.Logger.Errorf("Error in fetching user data...%s", err)
-			return util.GenerateErrorResponse(ctx, http.StatusInternalServerError, "AUTH_NO_USER_FOUND")
+			return util.GenerateErrorResponse(ctx, http.StatusBadRequest, "AUTH_FAILED")
 		}
 
 		// if user found compare password
@@ -91,11 +91,10 @@ func Init(e *echo.Echo) error {
 			return util.GenerateErrorResponse(ctx, http.StatusInternalServerError, "SOMETHING_WRONG")
 		}
 
-		return ctx.JSON(http.StatusOK, echo.Map{
-			"token": token,
-		})
+		return ctx.JSON(http.StatusOK, returnUser.getUserResponse(token))
 	})
 
+	// SIGNUP Route
 	e.POST("/signup", func(ctx echo.Context) error {
 		u := new(User)
 		if err := ctx.Bind(u); err != nil {
@@ -145,13 +144,12 @@ func Init(e *echo.Echo) error {
 			e.Logger.Errorf("Error in Inserting User ...%s", err)
 			if len(mongoErr.WriteErrors) > 0 {
 				for _, mErr := range mongoErr.WriteErrors {
-					fmt.Printf("prin %v", mErr.Message)
 					// username already exist
 					if mErr.Code == 11000 {
 						if strings.Contains(mErr.Message, "email") {
-							return util.GenerateErrorResponse(ctx, http.StatusInternalServerError, "AUTH_EMAIL_ALREADY_EXIST")
+							return util.GenerateErrorResponse(ctx, http.StatusBadRequest, "AUTH_EMAIL_ALREADY_EXIST")
 						}
-						return util.GenerateErrorResponse(ctx, http.StatusInternalServerError, "AUTH_USER_ALREADY_EXIST")
+						return util.GenerateErrorResponse(ctx, http.StatusBadRequest, "AUTH_USER_ALREADY_EXIST")
 					}
 				}
 			}
@@ -166,9 +164,7 @@ func Init(e *echo.Echo) error {
 			return util.GenerateErrorResponse(ctx, http.StatusInternalServerError, "SOMETHING_WRONG")
 		}
 
-		return ctx.JSON(http.StatusOK, echo.Map{
-			"token": token,
-		})
+		return ctx.JSON(http.StatusOK, u.getUserResponse(token))
 	})
 
 	return nil
@@ -191,4 +187,13 @@ func (u *User) getJWTToken() (string, error) {
 	}
 
 	return t, nil
+}
+
+func (u *User) getUserResponse(token string) echo.Map {
+	return echo.Map{
+		"username": u.Username,
+		"email":    u.Email,
+		"token":    token,
+		"plan":     u.Plan,
+	}
 }

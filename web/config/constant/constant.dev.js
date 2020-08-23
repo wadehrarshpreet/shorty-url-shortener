@@ -3,7 +3,8 @@
 module.exports = {
   webpack: {
     clientConstants: {
-      baseURL: '/public'
+      baseURL: '/public',
+      API_BASE: 'http://localhost:1234'
     }
   }
 };

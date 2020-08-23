@@ -4,11 +4,20 @@ package util
 //
 // key = MODULE_<DESC>
 // common key use by multiple packages then drop MODULE_
-var errorMap = map[string]string{
-	"INVALID_REQUEST_PARAM":   "Invalid Request Params",
-	"SOMETHING_WRONG":         "Something Went Wrong! Please try again later.",
-	"AUTH_INVALID_USERNAME":   "Username must be between 4 and 32 characters",
-	"AUTH_INVALID_EMAIL":      "Invalid Email Address",
-	"AUTH_INVALID_PASSWORD":   "Password must be 8 character long with at least one number & one character.",
-	"AUTH_USER_ALREADY_EXIST": "Username or Email already taken.",
+
+type errorData struct {
+	errCode int
+	message string
+}
+
+var errorMap = map[string]errorData{
+	"INVALID_REQUEST_PARAM":    {10001, "Invalid Request Params"},
+	"SOMETHING_WRONG":          {10002, "Something Went Wrong! Please try again later."},
+	"AUTH_INVALID_USERNAME":    {10003, "Username must be between 4 and 32 characters"},
+	"AUTH_INVALID_EMAIL":       {10004, "Invalid Email Address"},
+	"AUTH_INVALID_PASSWORD":    {10005, "Password must be 8 character long with at least one number & one character."},
+	"AUTH_USER_ALREADY_EXIST":  {10006, "Username already taken."},
+	"AUTH_EMAIL_ALREADY_EXIST": {10007, "Email Already exist"},
+	"AUTH_NO_USER_FOUND":       {10008, "No user found."},
+	"AUTH_FAILED":              {10009, "Authentication failed"},
 }

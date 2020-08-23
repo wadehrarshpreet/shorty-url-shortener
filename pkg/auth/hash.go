@@ -1,11 +1,14 @@
 package auth
 
 import (
+	"fmt"
+
 	"golang.org/x/crypto/bcrypt"
 )
 
 func generatePasswordHash(pwd []byte) (string, error) {
 
+	fmt.Printf("pwd %v", pwd)
 	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
 	if err != nil {
 		return "", err

@@ -36,7 +36,13 @@ func main() {
 	// e.Logger.SetLevel(log.DEBUG)
 
 	// Connect Database
-	util.ConnectDatabase()
+	dbErr := util.ConnectDatabase()
+	if dbErr != nil {
+		e.Logger.Fatalf("Error in DB Connection...%s", dbErr)
+	}
+
+	// Init Request Id middleware
+	e.Use(middleware.RequestID())
 
 	// Init Request Logger
 	e.Use(middleware.Logger())

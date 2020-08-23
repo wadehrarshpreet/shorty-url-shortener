@@ -4,23 +4,33 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
+	uuid "github.com/satori/go.uuid"
 	"github.com/wadehrarshpreet/short/pkg/util"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
+
+type lastLogin struct {
+	Time          time.Time `bson:"time"`
+	SessionID     string    `bson:"sessionId"`
+	RemoteAddress string    `bson:"remoteIP"`
+}
 
 // User struct contains user info
 type User struct {
 	Username   string    `json:"username" bson:"_id"`
 	Email      string    `json:"email" bson:"email"`
 	Password   string    `json:"password" bson:"-"`
-	Plan       string    `json:"-" bson:"plan"`
+	Plan       string    `json:"plan" bson:"plan"`
 	EncryptPwd string    `json:"-" bson:"password"`
 	CreatedAt  time.Time `json:"-" bson:"createdAt"`
 	UpdatedAt  time.Time `json:"-" bson:"UpdatedAt"`
+	LastLogin  lastLogin `json:"-" bson:"lastLogin"`
 }
 
 // Init initializes auth routes and services
@@ -28,8 +38,61 @@ func Init(e *echo.Echo) error {
 
 	// initate routes
 	e.POST("/login", func(ctx echo.Context) error {
+		u := new(User)
+		if err := ctx.Bind(u); err != nil {
+			return util.GenerateErrorResponse(ctx, http.StatusBadRequest, "INVALID_REQUEST_PARAM")
+		}
+
+		// validate params
+		if len(u.Username) == 0 || len(u.Password) == 0 {
+			return util.GenerateErrorResponse(ctx, http.StatusBadRequest, "INVALID_REQUEST_PARAM")
+		}
+
+		// make db query
+		userCollection := util.DB.Collection("users")
+
+		query := bson.M{"_id": u.Username}
+		fmt.Printf("query %v", query)
+
+		returnUser := new(User)
+		err := userCollection.FindOne(context.Background(), query).Decode(&returnUser)
+
+		if err != nil {
+			// e.Logger.Errorf("Error in fetching user data...%s", err)
+			return util.GenerateErrorResponse(ctx, http.StatusInternalServerError, "AUTH_NO_USER_FOUND")
+		}
+
+		// if user found compare password
+		matched, err := comparePasswords(returnUser.EncryptPwd, []byte(u.Password))
+		if err != nil {
+			e.Logger.Errorf("Error in comparing password...%s", err)
+			return util.GenerateErrorResponse(ctx, http.StatusInternalServerError, "SOMETHING_WRONG")
+		}
+
+		if !matched {
+			return util.GenerateErrorResponse(ctx, http.StatusBadRequest, "AUTH_FAILED")
+		}
+		// if password match send JWT token & create session
+
+		// generate new Session
+		returnUser.LastLogin = lastLogin{time.Now(), uuid.NewV4().String(), ctx.RealIP()}
+		// update session details on db async
+		go func() {
+			updateResult, err := userCollection.UpdateOne(context.Background(), query, bson.M{"$set": bson.M{"lastLogin": returnUser.LastLogin}})
+			if err != nil {
+				e.Logger.Errorf("Error in updating last Login Info...%s", err)
+			}
+			e.Logger.Infof("Successfully update login Session %v", updateResult)
+		}()
+
+		token, err := returnUser.getJWTToken()
+		if err != nil {
+			e.Logger.Errorf("Error in generating JWT token...%s", err)
+			return util.GenerateErrorResponse(ctx, http.StatusInternalServerError, "SOMETHING_WRONG")
+		}
+
 		return ctx.JSON(http.StatusOK, echo.Map{
-			"success": true,
+			"token": token,
 		})
 	})
 
@@ -69,20 +132,26 @@ func Init(e *echo.Echo) error {
 		u.CreatedAt = time.Now()
 		u.UpdatedAt = time.Now()
 
+		// generate Login SESSION
+		u.LastLogin = lastLogin{time.Now(), uuid.NewV4().String(), ctx.RealIP()}
+
 		// Write to DB (unique indexes on username & email)
 		userCollection := util.DB.Collection("users")
 
-		res, err := userCollection.InsertOne(context.Background(), u)
+		_, writeErr := userCollection.InsertOne(context.Background(), u)
 
-		if err != nil {
-			mongoErr := err.(mongo.WriteException)
+		if writeErr != nil {
+			mongoErr := writeErr.(mongo.WriteException)
 			e.Logger.Errorf("Error in Inserting User ...%s", err)
 			if len(mongoErr.WriteErrors) > 0 {
 				for _, mErr := range mongoErr.WriteErrors {
 					fmt.Printf("prin %v", mErr.Message)
 					// username already exist
 					if mErr.Code == 11000 {
-						return util.GenerateErrorResponse(ctx, http.StatusInternalServerError, "USER_ALREADY_EXIST")
+						if strings.Contains(mErr.Message, "email") {
+							return util.GenerateErrorResponse(ctx, http.StatusInternalServerError, "AUTH_EMAIL_ALREADY_EXIST")
+						}
+						return util.GenerateErrorResponse(ctx, http.StatusInternalServerError, "AUTH_USER_ALREADY_EXIST")
 					}
 				}
 			}
@@ -90,11 +159,10 @@ func Init(e *echo.Echo) error {
 		}
 
 		// generate JWT Token
-		fmt.Printf("data %v", u)
-		fmt.Printf("data %v", res)
 
 		token, err := u.getJWTToken()
 		if err != nil {
+			e.Logger.Errorf("Error in generating JWT token...%s", err)
 			return util.GenerateErrorResponse(ctx, http.StatusInternalServerError, "SOMETHING_WRONG")
 		}
 
@@ -106,11 +174,13 @@ func Init(e *echo.Echo) error {
 	return nil
 }
 
+// getJWTToken generate JWT token based on User
 func (u *User) getJWTToken() (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
 	claims["name"] = u.Username
 	claims["plan"] = u.Plan
+	claims["sessionId"] = u.LastLogin.SessionID
 	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
 
 	// Generate encoded token and send it as response.

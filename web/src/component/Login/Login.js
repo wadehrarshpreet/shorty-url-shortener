@@ -5,7 +5,6 @@ import { loginUser } from '../../actions/auth';
 
 const Login = ({ login, loginState }) => {
   const [form, setForm] = React.useState({ username: { value: '', error: '' } });
-  console.log(loginState);
 
   return (
     <div className='signup'>

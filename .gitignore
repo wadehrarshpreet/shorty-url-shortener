@@ -23,3 +23,5 @@
 .env
 tmp
 vendor
+# doc folder generated automatic via swag 
+docs

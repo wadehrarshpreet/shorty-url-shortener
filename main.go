@@ -13,11 +13,26 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
+	echoSwagger "github.com/swaggo/echo-swagger"
+	_ "github.com/wadehrarshpreet/short/docs"
 	"github.com/wadehrarshpreet/short/pkg/auth"
 	"github.com/wadehrarshpreet/short/pkg/util"
 	"github.com/wadehrarshpreet/short/pkg/web"
 )
 
+// @title Shorty URL Shortner
+// @version 0.0.1
+// @description This is a API Docs of Shorty URL Shortner Service.
+
+// @contact.name Arshpreet Wadehra
+// @contact.url https://github.com/wadehrarshpreet/shorty
+// @contact.email me@wadehrarshpreet.com
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:1234
+// @BasePath /
 func main() {
 
 	// Create channel for shutdown signals.
@@ -35,6 +50,9 @@ func main() {
 	port := util.Getenv("PORT", "1234")
 	e := echo.New()
 	// e.Logger.SetLevel(log.DEBUG)
+
+	// Init Swagger Routes
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
 	// Connect Database
 	dbErr := util.ConnectDatabase()

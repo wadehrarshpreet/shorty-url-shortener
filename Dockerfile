@@ -16,7 +16,7 @@ FROM golang:1.15.0-alpine as builder
 WORKDIR /go/src/app
 COPY . .
 RUN apk add --no-cache make
-RUN make
+RUN make swagger
 
 RUN go get -d -v ./...
 RUN go install -v ./...

@@ -33,6 +33,11 @@ import (
 
 // @host localhost:1234
 // @BasePath /
+
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
+
 func main() {
 
 	// Create channel for shutdown signals.

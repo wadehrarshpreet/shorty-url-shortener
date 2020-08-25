@@ -18,6 +18,13 @@ func Getenv(key, fallback string) string {
 	return fallback
 }
 
+// ErrorResponse error response format
+type ErrorResponse struct {
+	Error     bool   `json:"error"`
+	Message   string `json:"message"`
+	ErrorCode int    `json:"errorCode"`
+}
+
 // GenerateErrorResponse used to return json response for error
 func GenerateErrorResponse(ctx echo.Context, code int, pathOrMessage string) error {
 	var appErrCode = 999
@@ -30,10 +37,10 @@ func GenerateErrorResponse(ctx echo.Context, code int, pathOrMessage string) err
 		errMessage = message.message
 	}
 
-	return ctx.JSON(code, echo.Map{
-		"error":     true,
-		"message":   errMessage,
-		"errorCode": appErrCode,
+	return ctx.JSON(code, ErrorResponse{
+		Error:     true,
+		Message:   errMessage,
+		ErrorCode: appErrCode,
 	})
 }
 

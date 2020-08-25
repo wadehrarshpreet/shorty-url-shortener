@@ -23,7 +23,7 @@ export default [
   {
     path: '/',
     component: Loadable({
-      loader: () => import(/* webpackChunkName: "home", webpackMode: "lazy" */ '../component/Home'),
+      loader: () => import(/* webpackChunkName: "home", webpackMode: "lazy" */ '../component/Home/Home'),
       loading: Loading
     })
   }

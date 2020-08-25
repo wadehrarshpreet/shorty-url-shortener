@@ -7,6 +7,7 @@ const App = () => (
   <div className='app-wrapper'>
     <Header />
     <div className='app-container'>{renderRoutes(routes)}</div>
+    <footer>&copy; Shorty {new Date().getFullYear()}</footer>
   </div>
 );
 

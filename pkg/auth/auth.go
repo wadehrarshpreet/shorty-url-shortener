@@ -8,13 +8,14 @@ import (
 	"github.com/wadehrarshpreet/short/pkg/util"
 )
 
+// lastLogin store user last Login data
 type lastLogin struct {
 	Time          time.Time `bson:"time"`
 	SessionID     string    `bson:"sessionId"`
 	RemoteAddress string    `bson:"remoteIP"`
 }
 
-// for swagger usage
+// userRequest for login API
 type userRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
@@ -32,6 +33,7 @@ type User struct {
 	LastLogin  lastLogin `json:"-" bson:"lastLogin"`
 }
 
+// userResponse api response structure for auth API
 type userResponse struct {
 	Username string `json:"username"`
 	Email    string `json:"email"`
@@ -40,7 +42,6 @@ type userResponse struct {
 }
 
 // Init initializes auth routes and services
-// initate Auth Routes
 func Init(e *echo.Echo) error {
 
 	// Login Route
@@ -71,6 +72,7 @@ func (u *User) getJWTToken() (string, error) {
 	return t, nil
 }
 
+// getUserResponse generate response object for API
 func (u *User) getUserResponse(token string) userResponse {
 	return userResponse{
 		Username: u.Username,

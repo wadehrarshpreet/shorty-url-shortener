@@ -48,6 +48,20 @@ a:visited {
   margin: 1rem 0;
 }
 
+.mt-1 {
+  margin-top: 1rem;
+}
+
 .fs-18 {
   font-size: 18px;
+}
+
+.theme-color {
+  color: $theme-color;
+}
+
+footer {
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
 }

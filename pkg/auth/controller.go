@@ -20,7 +20,7 @@ import (
 // @Produce  json
 // @tags auth
 // @Param user body userRequest true "Login API"
-// @Success 200 {object} auth.userResponse
+// @Success 201 {object} auth.userResponse
 // @Failure 400 {object} util.ErrorResponse "10001 - Invalid Request Params, 10009 - Invalid Username or Password"
 // @Failure 500 {object} util.ErrorResponse "10002 - Something Went Wrong! Please try again later."
 // @Router /login [post]
@@ -77,7 +77,7 @@ func login(ctx echo.Context) error {
 		return util.GenerateErrorResponse(ctx, http.StatusInternalServerError, "SOMETHING_WRONG")
 	}
 
-	return ctx.JSON(http.StatusOK, returnUser.getUserResponse(token))
+	return ctx.JSON(http.StatusCreated, returnUser.getUserResponse(token))
 }
 
 // @Summary Register API

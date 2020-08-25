@@ -6,6 +6,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// generatePasswordHash is used to generate password hash
 func generatePasswordHash(pwd []byte) (string, error) {
 
 	fmt.Printf("pwd %v", pwd)
@@ -18,6 +19,7 @@ func generatePasswordHash(pwd []byte) (string, error) {
 	return string(hash), nil
 }
 
+// comparePasswords is used to compare generated hash with plain password
 func comparePasswords(hashedPwd string, plainPwd []byte) (bool, error) {
 	// Since we'll be getting the hashed password from the DB it
 	// will be a string so we'll need to convert it to a byte slice

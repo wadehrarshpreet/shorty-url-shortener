@@ -12,10 +12,10 @@ Tool to shorten long URL to short one.
 
 ### Feature
 
-- URL Shortener
-- Login Auth via JWT
-- Custom URL for logged in user
-- URL Click analytics
+- [x] Login Auth via JWT
+- [ ] URL Shortener
+- [ ] Custom URL for logged in user
+- [ ] URL Click analytics
 
 
 

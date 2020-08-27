@@ -9,6 +9,13 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+var (
+	// ReservedWebsiteRoutes list of reserve web routes
+	ReservedWebsiteRoutes = [...]string{"/login", "/signup", "/", "/about", "/contact"}
+	// ReservedWebsiteRoutesMap map of reserve web routes O(1)
+	ReservedWebsiteRoutesMap = map[string]bool{"login": true, "signup": true, "about": true, "contact": true}
+)
+
 // Template custom type of Echo Renderer
 type Template struct {
 	templates *template.Template
@@ -36,7 +43,14 @@ func InitWebsite(e *echo.Echo) {
 	e.Renderer = t
 
 	// Register HTML route SPA
-	e.GET("/*", func(c echo.Context) error {
+	for _, route := range ReservedWebsiteRoutes {
+		e.GET(route, handleWebsite(seoData))
+	}
+
+}
+
+func handleWebsite(seoData Seo) echo.HandlerFunc {
+	return func(c echo.Context) error {
 		requestURLPath := c.Request().URL.Path
 		pageSEOData, ok := seoData[requestURLPath]
 		if !ok {
@@ -46,6 +60,5 @@ func InitWebsite(e *echo.Echo) {
 		return c.Render(http.StatusOK, "index.html", echo.Map{
 			"SEO": pageSEOData,
 		})
-	})
-
+	}
 }

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -16,6 +17,7 @@ import (
 	echoSwagger "github.com/swaggo/echo-swagger"
 	_ "github.com/wadehrarshpreet/short/docs"
 	"github.com/wadehrarshpreet/short/pkg/auth"
+	"github.com/wadehrarshpreet/short/pkg/shorten"
 	"github.com/wadehrarshpreet/short/pkg/util"
 	"github.com/wadehrarshpreet/short/pkg/web"
 )
@@ -75,7 +77,25 @@ func main() {
 		AllowOrigins: []string{"*"},
 	}))
 
-	apiGroup := e.Group("/api", middleware.JWT([]byte(util.Getenv("JWT_SECRET", "shorty-secret123"))))
+	// if JWT pass then check for valid Auth if not bypass and let API decide
+	apiGroup := e.Group("/api", middleware.JWTWithConfig(middleware.JWTConfig{
+		SigningKey: []byte(util.Getenv("JWT_SECRET", "shorty-secret123")),
+		Skipper: func(c echo.Context) bool {
+			headerToken := c.Request().Header.Get("Authorization")
+			if strings.Contains(headerToken, "Bearer") {
+				return false
+			}
+			return true
+		},
+		ErrorHandlerWithContext: func(err error, c echo.Context) error {
+			return util.GenerateErrorResponse(c, http.StatusUnauthorized, "UNAUTHORIZED")
+		},
+	}))
+
+	apiRouteError := shorten.Init(apiGroup)
+	if apiRouteError != nil {
+		e.Logger.Fatalf("Error in initializing APIs...%s", apiRouteError)
+	}
 
 	apiGroup.GET("/", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, echo.Map{

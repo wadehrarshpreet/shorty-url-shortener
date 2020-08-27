@@ -19,4 +19,6 @@ var errorMap = map[string]errorData{
 	"AUTH_USER_ALREADY_EXIST":  {10006, "Username already taken"},
 	"AUTH_EMAIL_ALREADY_EXIST": {10007, "Email Already exist"},
 	"AUTH_FAILED":              {10009, "Invalid Username or Password"},
+	"UNAUTHORIZED":             {10010, "You are not authorized to perform this action"},
+	"URL_ALREADY_TAKEN":        {10011, "Short URL is already taken"},
 }

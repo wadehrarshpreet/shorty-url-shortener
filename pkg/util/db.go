@@ -64,5 +64,17 @@ func initIndexes() error {
 		return err
 	}
 	log.Printf("Users Index Created %s", indexName)
+
+	urlCollection := DB.Collection("url")
+	indexName, err = urlCollection.Indexes().CreateOne(bc, mongo.IndexModel{
+		Keys: bson.M{
+			"urlHash": 1,
+		},
+	})
+	if err != nil {
+		return err
+	}
+	log.Printf("URL Hash Index Created %s", indexName)
+
 	return nil
 }

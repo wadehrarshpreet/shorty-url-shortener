@@ -135,7 +135,7 @@ func createShortURL(mongoObj *urlShortenModel, customURL string, responseData ch
 	// write only if new URL else return old
 
 	if isCustom {
-		// always run insert command
+		// always insert in case of custom command
 		writeErr = urlCollection.FindOneAndUpdate(context.Background(), bson.M{"$and": bson.A{
 			bson.M{"_id": mongoObj.ID},
 			bson.M{"urlHash": mongoObj.URLHash},
@@ -164,4 +164,28 @@ func createShortURL(mongoObj *urlShortenModel, customURL string, responseData ch
 	}
 
 	responseData <- returnData.ID
+}
+
+func urlRedirection(c echo.Context) error {
+
+	// mongo query get long URL
+	shortCode := c.Param("shortCode")
+
+	if len(shortCode) < 3 {
+		return c.Redirect(http.StatusMovedPermanently, "/")
+	}
+	// fmt.Println(shortCode)
+
+	urlCollection := util.DB.Collection("url")
+	returnData := new(urlShortenModel)
+
+	updateOpt := options.FindOneAndUpdate()
+	updateOpt.SetReturnDocument(options.After)
+
+	err := urlCollection.FindOneAndUpdate(context.Background(), bson.M{"_id": shortCode}, bson.M{"$inc": bson.M{"visitCount": 1}}, updateOpt).Decode(&returnData)
+	if err != nil || len(returnData.URL) == 0 {
+		return c.Redirect(http.StatusTemporaryRedirect, "/")
+	}
+
+	return c.Redirect(http.StatusMovedPermanently, returnData.URL)
 }

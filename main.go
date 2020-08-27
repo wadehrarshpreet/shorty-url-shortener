@@ -116,6 +116,9 @@ func main() {
 	// Initialize Webview
 	web.InitWebsite(e)
 
+	// Short URL Redirection Route
+	shorten.InitRedirectionRoute(e)
+
 	go func() {
 		e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", port)))
 	}()

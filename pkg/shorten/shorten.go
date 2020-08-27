@@ -56,6 +56,14 @@ func Init(e *echo.Group) error {
 	return nil
 }
 
+// InitRedirectionRoute intializes short to long url redirection routes
+func InitRedirectionRoute(e *echo.Echo) error {
+
+	e.GET("/:shortCode", urlRedirection)
+
+	return nil
+}
+
 func isURL(str string) bool {
 	u, err := url.Parse(str)
 	return err == nil && u.Scheme != "" && u.Host != ""

@@ -3,3 +3,4 @@
 vendor
 internal
 *.md
+node_modules

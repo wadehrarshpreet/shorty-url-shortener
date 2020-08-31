@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import './SignUp.scss';
 import { signUpUser } from '../../actions/auth';
-import { connect } from 'react-redux';
 
 function validateEmail(email) {
   // eslint-disable-next-line

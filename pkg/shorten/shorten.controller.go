@@ -24,15 +24,15 @@ import (
 // @Accept  json
 // @Produce  json
 // @tags url-shortener
-// @Param URL-Shortening body urlShorteningRequest true "URL Shortening"
+// @Param URL-Shortening body URLShorteningRequest true "URL Shortening"
 // @Success 200 {object} urlShorteningResponse
 // @Security ApiKeyAuth
-// @Failure 400 {object} util.ErrorResponse "10001 - Invalid Request Params, 10007 - Email Already exist, 10006 - Username already taken, 10005 - Password must be 8 character long with at least one number & one character, 10004 - Invalid Email Address, 10003 - Username must be between 4 and 32 characters"
+// @Failure 400 {object} util.ErrorResponse "10001 - Invalid Request Params, 10011 - Short URL is already taken"
 // @Failure 500 {object} util.ErrorResponse "10002 - Something Went Wrong! Please try again later"
 // @Router /api/v1/short [post]
 func urlShortener(c echo.Context) error {
 	// Parse Request
-	r := new(urlShorteningRequest)
+	r := new(URLShorteningRequest)
 	if err := c.Bind(r); err != nil {
 		return util.GenerateErrorResponse(c, http.StatusBadRequest, "INVALID_REQUEST_PARAM")
 	}
@@ -103,7 +103,7 @@ func urlShortener(c echo.Context) error {
 	case <-ctx.Done():
 		{
 			// timeout
-			c.Logger().Errorf("20s Timeout exceed...")
+			c.Logger().Errorf("5s Timeout exceed...")
 			return util.GenerateErrorResponse(c, http.StatusInternalServerError, "SOMETHING_WRONG")
 		}
 	}
@@ -162,7 +162,6 @@ func createShortURL(mongoObj *urlShortenModel, customURL string, responseData ch
 		responseData <- writeErr
 		return
 	}
-
 	responseData <- returnData.ID
 }
 

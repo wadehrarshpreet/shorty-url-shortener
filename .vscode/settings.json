@@ -1,3 +1,4 @@
 {
-  "go.buildTags": "tools"
+  "go.buildTags": "tools",
+  "editor.formatOnSave": true
 }

@@ -12,7 +12,7 @@ a:visited {
 }
 
 .app-container {
-  padding-top: $headerHeight;
+  // padding-top: $headerHeight;
 }
 
 .text-left {
@@ -64,4 +64,8 @@ footer {
   position: fixed;
   bottom: 5px;
   right: 5px;
+}
+
+.m-auto {
+  margin: auto;
 }

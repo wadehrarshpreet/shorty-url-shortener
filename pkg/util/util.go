@@ -11,7 +11,7 @@ import (
 
 var emailRegex = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 var passwordRegexp = regexp.MustCompile("(?i)^(?:[0-9]+[a-z]|[a-z]+[0-9])[a-z0-9]*$")
-var alphaNumericURegex = regexp.MustCompile("[a-zA-Z0-9_]{5,}")
+var alphaNumericURegex = regexp.MustCompile("[a-zA-Z0-9_]{4,}")
 
 // Getenv reads environment variables for given key and second argument as fallback value
 func Getenv(key, fallback string) string {

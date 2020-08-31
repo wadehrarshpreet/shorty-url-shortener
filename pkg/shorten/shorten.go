@@ -18,9 +18,12 @@ const (
 
 var (
 	characterLength, _ = strconv.Atoi(util.Getenv("SHORT_CHAR_LENGTH", "7"))
+	// ShortURLAPIRoute route of Short URL API
+	ShortURLAPIRoute = fmt.Sprintf("/%s/short", apiVersionV1)
 )
 
-type urlShorteningRequest struct {
+// URLShorteningRequest is request of url shortening api
+type URLShorteningRequest struct {
 	// URL long url
 	URL string `json:"url"`
 	// Custom name for short URL only valid for logged in user
@@ -50,7 +53,7 @@ func Init(e *echo.Group) error {
 
 	// Shortening URL Route
 
-	e.POST(fmt.Sprintf("/%s/short", apiVersionV1), urlShortener)
+	e.POST(ShortURLAPIRoute, urlShortener)
 
 	// e.Post("/sm")
 	return nil

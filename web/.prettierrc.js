@@ -2,7 +2,7 @@ module.exports = {
   trailingComma: 'none',
   semi: true,
   singleQuote: true,
-  printWidth: 300,
+  printWidth: 80,
   jsxSingleQuote: true,
   arrowParens: 'always'
 };

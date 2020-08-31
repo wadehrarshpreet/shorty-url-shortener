@@ -13,8 +13,8 @@ Tool to shorten long URL to short one.
 ### Feature
 
 - [x] Login Auth via JWT
-- [ ] URL Shortener
-- [ ] Custom URL for logged in user
+- [x] URL Shortener
+- [x] Custom URL for logged in user
 - [ ] URL Click analytics
 
 

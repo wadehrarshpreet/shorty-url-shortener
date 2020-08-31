@@ -1,8 +1,11 @@
 package main
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"os/signal"
@@ -83,6 +86,23 @@ func main() {
 		Skipper: func(c echo.Context) bool {
 			headerToken := c.Request().Header.Get("Authorization")
 			if strings.Contains(headerToken, "Bearer") {
+				// skip check if hitting shorten url api & custom is not provided
+				if strings.Contains(c.Request().URL.String(), shorten.ShortURLAPIRoute) {
+					rq := c.Request()
+					bodyBytes, _ := ioutil.ReadAll(rq.Body)
+					rq.Body.Close() //  must close
+					rq.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
+					// check if custom param missing
+					r := new(shorten.URLShorteningRequest)
+
+					if err := json.Unmarshal(bodyBytes, &r); err != nil {
+						return false
+					}
+					if len(r.Custom) == 0 {
+						return true
+					}
+
+				}
 				return false
 			}
 			return true

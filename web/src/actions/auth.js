@@ -19,6 +19,7 @@ export function loginUser(loginData) {
 export function logoutUser() {
   return (dispatch) => {
     localStorage.removeItem('userData');
+    api.setAuthHeaders(null);
     dispatch({ type: LOGOUT });
   };
 }

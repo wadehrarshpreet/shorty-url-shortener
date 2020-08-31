@@ -8,7 +8,7 @@ export default [
     exact: true,
     path: '/signup',
     component: Loadable({
-      loader: () => import(/* webpackChunkName: "home", webpackMode: "lazy" */ '../component/SignUp/SignUp'),
+      loader: () => import(/* webpackChunkName: "home", webpackMode: "lazy" */ '../pages/SignUp/SignUp'),
       loading: Loading
     })
   },
@@ -16,14 +16,14 @@ export default [
     exact: true,
     path: '/login',
     component: Loadable({
-      loader: () => import(/* webpackChunkName: "home", webpackMode: "lazy" */ '../component/Login/Login'),
+      loader: () => import(/* webpackChunkName: "home", webpackMode: "lazy" */ '../pages/Login/Login'),
       loading: Loading
     })
   },
   {
     path: '/',
     component: Loadable({
-      loader: () => import(/* webpackChunkName: "home", webpackMode: "lazy" */ '../component/Home/Home'),
+      loader: () => import(/* webpackChunkName: "home", webpackMode: "lazy" */ '../pages/Home/Home'),
       loading: Loading
     })
   }

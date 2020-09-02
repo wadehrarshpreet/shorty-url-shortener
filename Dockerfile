@@ -38,6 +38,8 @@ COPY --from=builder /go/bin/short .
 COPY --from=builder /go/src/app/docs ./docs
 # copy config files
 COPY configs ./configs/
+# copy seoData
+COPY pkg/web/SEOData.json ./pkg/web/
 # copy web files
 COPY --from=web web/dist ./web/dist
 # copy index.html

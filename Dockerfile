@@ -24,7 +24,7 @@ RUN go install -v ./...
 
 RUN ls /go/bin
 
-EXPOSE 1234
+
 
 ## Final Build
 FROM alpine:3.7
@@ -43,4 +43,6 @@ COPY --from=web web/dist ./web/dist
 # copy index.html
 COPY --from=web web/index.html ./web/index.html
 # run the binary
+EXPOSE 1234
+EXPOSE 80
 CMD ["/app/short"]

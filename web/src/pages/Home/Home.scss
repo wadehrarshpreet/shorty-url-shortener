@@ -8,6 +8,10 @@
   min-height: 400px;
   position: relative;
   // top: -80px;
+
+  @media screen and (max-height: 600px) {
+    padding-top: 80px;
+  }
 }
 
 .main-logo {

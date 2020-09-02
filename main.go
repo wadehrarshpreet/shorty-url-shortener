@@ -50,6 +50,9 @@ func main() {
 	signal.Notify(stop, os.Interrupt)
 	signal.Notify(stop, syscall.SIGTERM)
 
+	// pick PORT from env before initialize .env
+	port := util.Getenv("PORT", "1234")
+
 	// Initialize env variable
 	err := godotenv.Load("configs/.env")
 
@@ -57,7 +60,6 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	port := util.Getenv("PORT", "1234")
 	e := echo.New()
 	// e.Logger.SetLevel(log.DEBUG)
 

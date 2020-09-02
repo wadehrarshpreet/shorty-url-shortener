@@ -8,7 +8,7 @@
     "lint:fix": "eslint ./src/**/*.{js,jsx} --fix --quiet --ignore-path .gitignore ",
     "build-dev": "cross-env NODE_ENV=dev webpack",
     "start": "webpack && cross-env NODE_ENV=dev webpack-dev-server -d",
-    "build": "cross-env NODE_ENV=prod webpack -p"
+    "build": "cross-env NODE_ENV=production webpack -p"
   },
   "author": "Arshpreet Wadehra",
   "license": "ISC",

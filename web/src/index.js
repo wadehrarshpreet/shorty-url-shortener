@@ -1,6 +1,6 @@
-import '@babel/polyfill';
-import 'es6-promise';
-import 'fetch-ie8';
+//import '@babel/polyfill';
+//import 'es6-promise';
+//import 'fetch-ie8';
 
 import React from 'react';
 import ReactDOM from 'react-dom';

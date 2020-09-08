@@ -2,11 +2,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import QRCode from 'qrcode.react';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import './Home.scss';
 import AppLoader from '../../component/Loader/Loader.js';
 import { shortenURL } from '../../actions/short';
 import Modal from '../../component/Modal/Modal.js';
+
+const ExpandMoreIcon =
+  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAB+klEQVR4Xu2XSU7EMBREq+EIiJMhNTMsWcBtEAuWzJM4WYsjMKgkR4qsOCHlIZL9e9mdb6fer/p2r9D4Z9W4fhgAc0DjBCwCjRvAhqBFwCLQOAGLQOMGsFPAImARaJyARaBxA9gpYBGIjEAH8DdyHbU8ev8YB+wBuHVvfgngTVUh1u0DuHG1FwA+lXVUAKzbANhxm/4AOAPwpLyEUHMC4A7Alqv9ArALYLYTUwHgexDCKYBnQdCckmMA9z3xrC0OgJvSghTbdaEEhCHxBH+kRlB1QNcx34o5IVDkwwDwcwCPcyzUfzYWANcKQeD3L+qLeXVZxHOPFAByQ8gmPiWAMQjM7avohENnb3/ORNk+dQT664XioAypA3esZhOf2gFTg3EOhCLicwEIxeEbAOMwdWMMHa/JbJ8zAlNxIAQ64T0wE4qKz+mAsTiEIFA8r9LbPTi85GTpfLdHqmNwbMgPDUZC4IT/cIVrd6ssKr6EA6acQAhsAq/UxcWXBDA2GPnbIuJLAwhB6Mcne+b9rJaYAf6eQzOBzxQXv4QDQjNhEfFLAuDePPau3RC8+scFSfw7MV62RASyCFEXNQAquVrqzAG1dFLVYQ5QydVSZw6opZOqDnOASq6WOnNALZ1UdZgDVHK11JkDaumkqsMcoJKrpc4cUEsnVR3NO+APO5VoQVIQ0oEAAAAASUVORK5CYII=';
 
 const validateURL = (url) => {
   // eslint-disable-next-line
@@ -194,7 +196,7 @@ const Home = ({ userData, shortLongURL, shortUrl }) => {
                 } custom-url-trigger`}
                 onClick={() => setCustomURLInputState((x) => !x)}
               >
-                Custom URL <ExpandMoreIcon />{' '}
+                Custom URL <img src={ExpandMoreIcon} alt='expand' />{' '}
               </div>
               <div
                 className={`${showCustomURLInput ? 'expand' : ''} ${

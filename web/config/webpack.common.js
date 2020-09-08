@@ -114,7 +114,12 @@ module.exports = {
       fetch: 'exports-loader?self.fetch!whatwg-fetch'
     }),
 
-    new webpack.ContextReplacementPlugin(/\.\/locale$/, 'empty-module', false, /js$/),
+    new webpack.ContextReplacementPlugin(
+      /\.\/locale$/,
+      'empty-module',
+      false,
+      /js$/
+    ),
 
     new HtmlWebpackPlugin({
       template: helpers.root('src/public/index.html'),
@@ -130,7 +135,9 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: isProd ? 'css/[name].[contenthash].css' : 'css/[name].css',
-      chunkFilename: !isProd ? '[name]/[name].css' : '[name]/[name].[contenthash].css'
+      chunkFilename: !isProd
+        ? '[name]/[name].css'
+        : '[name]/[name].[contenthash].css'
     }),
 
     new CopyWebpackPlugin([

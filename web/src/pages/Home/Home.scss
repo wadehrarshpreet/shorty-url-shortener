@@ -165,12 +165,12 @@
   align-items: flex-end;
 
   &.expand {
-    svg {
+    img {
       transform: rotateZ(180deg);
     }
   }
 
-  svg {
+  img {
     font-size: 16px;
     height: 16px;
     width: 16px;
